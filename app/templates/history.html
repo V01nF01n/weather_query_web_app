@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <form method="get" action="/history">
+    <div class="row">
+      <div class="field">
+        <label>City contains</label>
+        <input name="city" value="{{ filters.city }}" placeholder="lon">
+      </div>
+      <div class="field">
+        <label>From</label>
+        <input type="date" name="from" value="{{ filters.from }}">
+      </div>
+      <div class="field">
+        <label>To</label>
+        <input type="date" name="to" value="{{ filters.to }}">
+      </div>
+      <div class="field">
+        <label>Page size</label>
+        <input type="number" name="page_size" value="{{ history.page_size }}" min="1" max="100">
+      </div>
+      <div class="field" style="justify-content:end">
+        <label>&nbsp;</label>
+        <button type="submit">Apply</button>
+      </div>
+    </div>
+  </form>
+  <p><a href="/export.csv?city={{ filters.city }}&from={{ filters.from }}&to={{ filters.to }}&page_size=1000">Export CSV</a></p>
+</div>
+
+<div class="card">
+  <h2>Query history</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>City</th>
+        <th>Weather</th>
+        <th>Timestamp</th>
+        <th>Unit</th>
+        <th>Cache</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in history["items"] %}
+      <tr>
+        <td>{{ item.city_name }}</td>
+        <td>{{ item.temperature }} {{ '°C' if item.unit == 'celsius' else '°F' }}, {{ item.description }}</td>
+        <td>{{ item.queried_at }}</td>
+        <td>{{ item.unit }}</td>
+        <td>{% if item.served_from_cache %}<span class="badge badge-cache">served from cache</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted">Total: {{ history.total }}</p>
+  <div class="pager">
+    {% if history.page > 1 %}
+      <a href="/history?page={{ history.page - 1 }}&page_size={{ history.page_size }}&city={{ filters.city }}&from={{ filters.from }}&to={{ filters.to }}">Previous</a>
+    {% endif %}
+    {% if history.page < history.pages %}
+      <a href="/history?page={{ history.page + 1 }}&page_size={{ history.page_size }}&city={{ filters.city }}&from={{ filters.from }}&to={{ filters.to }}">Next</a>
+    {% endif %}
+  </div>
+</div>
+<p><a href="/">Home</a></p>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <form method="post" action="/api/weather">
+    <div class="row">
+      <div class="field">
+        <label>City</label>
+        <input name="city" required placeholder="London">
+      </div>
+      <div class="field">
+        <label>Unit</label>
+        <select name="unit">
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+        </select>
+      </div>
+      <div class="field" style="justify-content:end">
+        <label>&nbsp;</label>
+        <button type="submit">Fetch weather</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Recent history</h2>
+  <p class="muted">Use the history page for filters, pagination and CSV export.</p>
+  <p><a href="/history">Open full history</a></p>
+</div>
+{% endblock %}

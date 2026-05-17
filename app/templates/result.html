@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Weather for {{ result.city_name }}</h2>
+  <p><strong>Temperature:</strong> {{ result.temperature }} {{ '°C' if result.unit == 'celsius' else '°F' }}</p>
+  <p><strong>Feels like:</strong> {{ result.feels_like if result.feels_like is not none else '—' }}</p>
+  <p><strong>Humidity:</strong> {{ result.humidity if result.humidity is not none else '—' }}%</p>
+  <p><strong>Description:</strong> {{ result.description }}</p>
+  {% if result.served_from_cache %}
+    <span class="badge badge-cache">served from cache</span>
+  {% endif %}
+</div>
+<p><a href="/">Back</a> | <a href="/history">History</a></p>
+{% endblock %}
